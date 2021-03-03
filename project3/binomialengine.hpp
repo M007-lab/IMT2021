@@ -146,7 +146,7 @@ namespace QuantLib {
         Real gamma = (delta2u - delta2d) / ((s2u-s2d)/2);
 
         // Rollback to second-last step, and get option values (p1) at
-        // this point
+        // this point // to test a push
         option.rollback(grid[1]);
         Array va(option.values());
         QL_ENSURE(va.size() == 2, "Expect 2 nodes in grid at first step");
