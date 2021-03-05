@@ -85,7 +85,7 @@ namespace QuantLib {
         QL_REQUIRE(s0 > 0.0, "negative or null underlying given");
         Volatility v = process_->blackVolatility()->blackVol(
             arguments_.exercise->lastDate(), s0);
-        Date maturityDate = arguments_.exercise->lastDate();
+        Date maturityDate = arguments_.exercise->lastDate() ;
         Rate r = process_->riskFreeRate()->zeroRate(maturityDate,
             rfdc, Continuous, NoFrequency);
         Rate q = process_->dividendYield()->zeroRate(maturityDate,
@@ -173,8 +173,9 @@ namespace QuantLib {
         Real p0u = va[2]; // 1
         Real p0  = va[1]; // 0
         Real p0d = va[0]; // -1
-        Real s0u = lattice->underlying(2, 1); // up (high) price
-        Real s0d = lattice->underlying(2, -1); // down (low) price
+        std::cout << "lattice->underlying" << std::endl;
+        Real s0u = lattice->underlying(2, 2); // up (high) price
+        Real s0d = lattice->underlying(2, 1); // down (low) price
 
         Real delta = (p0u - p0d) / (s0u - s0d);
 
