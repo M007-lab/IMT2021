@@ -71,12 +71,17 @@ namespace QuantLib {
                         Size steps)
         : BinomialTree_2<T>(process, end, steps) {}
         Real underlying(Size i, Size index) const {
-            i -= 2;
-            if( index>i || index < 0){
-               return this->x0_ *(1 + index*0.0001);
+            
+            if( index > i){
+               Real u = std::exp(this->driftPerStep_ + this->up_);
+               return this->x0_ *(1 + 0.0001)*pow(u,i-2);
+            }
+            if(index < 0){
+              Real d = std::exp(this->driftPerStep_ - this->up_);
+              return this->x0_ *(1 - 0.0001)*pow(d,i - 2);
             }
             else {
-               BigInteger j = 2*BigInteger(index) - BigInteger(i);
+               BigInteger j = 2*BigInteger(index) - BigInteger(i - 2);
               // exploiting the forward value tree centering
               return this->x0_*std::exp(i*this->driftPerStep_ + j*this->up_);
             }
