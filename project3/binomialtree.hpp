@@ -30,6 +30,8 @@
 #include <ql/instruments/dividendschedule.hpp>
 #include <ql/stochasticprocess.hpp>
 
+#include <iostream>
+
 namespace QuantLib {
 
     //! Binomial tree base class
@@ -69,9 +71,16 @@ namespace QuantLib {
                         Size steps)
         : BinomialTree_2<T>(process, end, steps) {}
         Real underlying(Size i, Size index) const {
-            BigInteger j = 2*BigInteger(index) - BigInteger(i);
-            // exploiting the forward value tree centering
-            return this->x0_*std::exp(i*this->driftPerStep_ + j*this->up_);
+            i -= 2;
+            if( index>i || index < 0){
+               return this->x0_ *(1 + index*0.0001);
+            }
+            else {
+               BigInteger j = 2*BigInteger(index) - BigInteger(i);
+              // exploiting the forward value tree centering
+              return this->x0_*std::exp(i*this->driftPerStep_ + j*this->up_);
+            }
+            
         }
         Real probability(Size, Size, Size) const { return 0.5; }
       protected:

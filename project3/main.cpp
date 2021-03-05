@@ -61,8 +61,9 @@ int main() {
         auto endTime = std::chrono::steady_clock::now();
 
         double us = std::chrono::duration_cast<std::chrono::microseconds>(endTime - startTime).count();
-
+        Real delta = americanOption.delta();
         std::cout << "NPV: " << NPV << std::endl;
+         std::cout << "delta: " << delta << std::endl;
         std::cout << "Elapsed time: " << us / 1000000 << " s" << std::endl;
 
         return 0;
