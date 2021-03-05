@@ -58,7 +58,7 @@ namespace QuantLib {
              const boost::shared_ptr<GeneralizedBlackScholesProcess>& process,
              Size timeSteps)
              
-        : process_(process), timeSteps_(timeSteps+2) {
+        : process_(process), timeSteps_(timeSteps) {
             QL_REQUIRE(timeSteps >= 2,
                        "at least 2 time steps required, "
                        << timeSteps << " provided");
@@ -127,7 +127,7 @@ namespace QuantLib {
         
         
         DiscretizedVanillaOption option(arguments_, *process_, grid);
-        std::cout << "Maturity " << maturity << std::endl;
+        std::cout << "Maturity " << maturityDate << std::endl;
         std::cout << "#Steps " << timeSteps_ << std::endl;
         option.initialize(lattice, maturity);
 
@@ -166,17 +166,21 @@ namespace QuantLib {
 
         // Finally, rollback to t=0
         //option.rollback(0.0);
+        std::cout << "Option pricing " << std::endl;
         option.rollback(grid[2]);
+        
         Array va(option.values());
         QL_ENSURE(va.size() == 3, "Expect 3 nodes in grid at 2 step");
-        // Real p0 = option.presentValue();
+        //Real p0 = option.presentValue();
+        std::cout << "Up time "  << std::endl;
         Real p0u = va[2]; // 1
+        std::cout << "Up time end "  << std::endl;
         Real p0  = va[1]; // 0
         Real p0d = va[0]; // -1
-        std::cout << "lattice->underlying" << std::endl;
+        
         Real s0u = lattice->underlying(2, 2); // up (high) price
-        Real s0d = lattice->underlying(2, 1); // down (low) price
-
+        Real s0d = lattice->underlying(2, 0); // down (low) price
+        std::cout << "Underlying pricing, u0 = " << s0u << "/" <<  s0d << std::endl;
         Real delta = (p0u - p0d) / (s0u - s0d);
 
         // Store results
