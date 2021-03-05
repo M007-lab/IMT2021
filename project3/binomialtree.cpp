@@ -40,7 +40,7 @@ namespace QuantLib {
     : EqualJumpsBinomialTree_2<CoxRossRubinstein_2>(process, end, steps) {
 
         dx_ = process->stdDeviation(0.0, x0_, dt_);
-        pu_ = 0.5 + 0.5*driftPerStep_/dx_;;
+        pu_ = 0.5 + 0.5*driftPerStep_/dx_;
         pd_ = 1.0 - pu_;
 
         QL_REQUIRE(pu_<=1.0, "negative probability");
@@ -66,7 +66,7 @@ namespace QuantLib {
 
         dx_ = std::sqrt(process->variance(0.0, x0_, dt_)+
                         driftPerStep_*driftPerStep_);
-        pu_ = 0.5 + 0.5*driftPerStep_/dx_;;
+        pu_ = 0.5 + 0.5*driftPerStep_/dx_;
         pd_ = 1.0 - pu_;
 
         QL_REQUIRE(pu_<=1.0, "negative probability");

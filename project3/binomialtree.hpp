@@ -82,10 +82,10 @@ namespace QuantLib {
             if(index == 0){
               std::cout << " Hey down" << std::endl;
               Real d = std::exp(this->driftPerStep_ - this->up_);
-              return this->x0_ + log(1 - eps)  + d*(i - 2);//this->x0_*std::pow(d,i - 2)*(1 - 0.1);
+              return this->x0_ + log(1 - eps)  + d*(i-2);//this->x0_*std::pow(d,i - 2)*(1 - 0.1);
             }
             else {
-               i = i - 2;
+               
                index = index - 1;
                std::cout << " Hey else" << std::endl;
                BigInteger j = 2*BigInteger(index) - BigInteger(i);
