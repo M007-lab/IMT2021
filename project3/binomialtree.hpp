@@ -49,7 +49,7 @@ namespace QuantLib {
             driftPerStep_ = process->drift(0.0, x0_) * dt_;
         }
         Size size(Size i) const {
-            return i+1;
+            return i+1 + 2;
         }
         Size descendant(Size, Size index, Size branch) const {
             return index + branch;
@@ -76,13 +76,13 @@ namespace QuantLib {
             if(index == i){
               //std::cout << " Hey Up" << std::endl;
                Real u = std::exp(this->driftPerStep_ + this->up_);
-               return this->x0_ + log(1 + eps) + u*(i-2); //this->x0_ *std::pow(u,i-2)*(1 + 0.1);
+               return this->x0_ + log(1 + eps) + u*(i-2); //this->x0_ *std::pow(u,i-2)*(1 + eps);
             }
             // index = lower node
             if(index == 0){
               //std::cout << " Hey down" << std::endl;
               Real d = std::exp(this->driftPerStep_ - this->up_);
-              return this->x0_ + log(1 - eps)  + d*(i-2);//this->x0_*std::pow(d,i - 2)*(1 - 0.1);
+              return this->x0_ + log(1 - eps)  + d*(i-2);//this->x0_*std::pow(d,i - 2)*(1 - eps);
             }
             else {
                
