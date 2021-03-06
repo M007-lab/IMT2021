@@ -85,7 +85,7 @@ namespace QuantLib {
         QL_REQUIRE(s0 > 0.0, "negative or null underlying given");
         Volatility v = process_->blackVolatility()->blackVol(
             arguments_.exercise->lastDate(), s0);
-        Date maturityDate = arguments_.exercise->lastDate() ;
+        Date maturityDate = arguments_.exercise->lastDate()  ;
         Rate r = process_->riskFreeRate()->zeroRate(maturityDate,
             rfdc, Continuous, NoFrequency);
         Rate q = process_->dividendYield()->zeroRate(maturityDate,
@@ -114,7 +114,12 @@ namespace QuantLib {
                                       process_->stateVariable(),
                                       flatDividends, flatRiskFree, flatVol));
 
-        TimeGrid grid(maturity, timeSteps_);
+        TimeGrid temp_grid(maturity, timeSteps_);
+        TimeGrid grid();
+        for (int i=0;i<timeSteps_;i++){
+            grid.push_back(temp_grid[i] - temp_grid[2]);
+        }
+        
 
         boost::shared_ptr<T> tree(new T(bs, maturity, timeSteps_,
                                         payoff->strike()));
@@ -127,8 +132,7 @@ namespace QuantLib {
         
         
         DiscretizedVanillaOption option(arguments_, *process_, grid);
-        std::cout << "Maturity " << maturityDate << std::endl;
-        std::cout << "#Steps " << timeSteps_ << std::endl;
+        //std::cout << "Maturity " << arguments_.exercise-> << std::endl;
         option.initialize(lattice, maturity);
 
         // Partial derivatives calculated from various points in the
@@ -166,9 +170,9 @@ namespace QuantLib {
 
         // Finally, rollback to t=0
         //option.rollback(0.0);
-        std::cout << "Option pricing " << std::endl;
+        option.rollback(grid[timeSteps_]);
+        std::cout << "Option pricing " << new_grid[2] << "/" << new_grid[0] << "/" << std::endl;
         option.rollback(grid[2]);
-        
         Array va(option.values());
         QL_ENSURE(va.size() == 3, "Expect 3 nodes in grid at 2 step");
         //Real p0 = option.presentValue();
@@ -180,7 +184,7 @@ namespace QuantLib {
         
         Real s0u = lattice->underlying(2, 2); // up (high) price
         Real s0d = lattice->underlying(2, 0); // down (low) price
-        std::cout << "Underlying pricing, u0 = " << s0u << "/" <<  s0d << std::endl;
+        std::cout << "Underlying pricing, p0u = " << p0u << "/" <<  s0d << std::endl;
         Real delta = (p0u - p0d) / (s0u - s0d);
 
         // Store results

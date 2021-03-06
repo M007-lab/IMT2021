@@ -74,20 +74,20 @@ namespace QuantLib {
             Real eps = 0.001;
             // index = upper node
             if(index == i){
-              std::cout << " Hey Up" << std::endl;
+              //std::cout << " Hey Up" << std::endl;
                Real u = std::exp(this->driftPerStep_ + this->up_);
                return this->x0_ + log(1 + eps) + u*(i-2); //this->x0_ *std::pow(u,i-2)*(1 + 0.1);
             }
             // index = lower node
             if(index == 0){
-              std::cout << " Hey down" << std::endl;
+              //std::cout << " Hey down" << std::endl;
               Real d = std::exp(this->driftPerStep_ - this->up_);
               return this->x0_ + log(1 - eps)  + d*(i-2);//this->x0_*std::pow(d,i - 2)*(1 - 0.1);
             }
             else {
                
                index = index - 1;
-               std::cout << " Hey else" << std::endl;
+               //std::cout << " Hey else" << std::endl;
                BigInteger j = 2*BigInteger(index) - BigInteger(i);
               // exploiting the forward value tree centering
               return this->x0_*std::exp(i*this->driftPerStep_ + j*this->up_);
