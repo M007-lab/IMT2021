@@ -52,7 +52,7 @@ namespace QuantLib {
             return i+1 + 2;
         }
         Size descendant(Size, Size index, Size branch) const {
-            return index + branch;
+            return index -1 + branch;
         }
       protected:
         Real x0_, driftPerStep_;
@@ -71,9 +71,9 @@ namespace QuantLib {
                         Size steps)
         : BinomialTree_2<T>(process, end, steps) {}
         Real underlying(Size i, Size index) const {
-            Real eps = 0.001;
+            Real eps = 0.01;
             // index = upper node
-            if(index == i){
+            if(index == i+2){
               //std::cout << " Hey Up" << std::endl;
                Real u = std::exp(this->driftPerStep_ + this->up_);
                return this->x0_*std::pow(u,i) + log(1 + eps); //this->x0_ *std::pow(u,i-2)*(1 + eps);
@@ -85,7 +85,6 @@ namespace QuantLib {
               return this->x0_*std::pow(d,i) + log(1 - eps);//this->x0_*std::pow(d,i - 2)*(1 - eps);
             }
             else {
-               
                index = index - 1;
                //std::cout << " Hey else" << std::endl;
                BigInteger j = 2*BigInteger(index) - BigInteger(i);
@@ -94,7 +93,7 @@ namespace QuantLib {
             }
             
         }
-        Real probability(Size, Size, Size) const { return 0.5; }
+        Real probability(Size i, Size index, Size branch) const { return 0.5;}
       protected:
         Real up_;
     };
