@@ -114,11 +114,9 @@ namespace QuantLib {
                                       process_->stateVariable(),
                                       flatDividends, flatRiskFree, flatVol));
         
-        //maturity = (timeSteps_/(timeSteps_-2))*maturity;
+        maturity = ((timeSteps_+2)/(timeSteps_))*maturity;
         TimeGrid grid(maturity, timeSteps_);
-        // for (int i=0;i<timeSteps_;i++){
-        //     grid.push_back(temp_grid[i] - temp_grid[2]);
-        // }
+        
         
 
         boost::shared_ptr<T> tree(new T(bs, maturity, timeSteps_,
@@ -183,7 +181,7 @@ namespace QuantLib {
         std::cout << p0d  << "/" << p0 << "/" << p0u << std::endl;
         Real s0u = lattice->underlying(2, 2); // up (high) price
         Real s0d = lattice->underlying(2, 0); // down (low) price
-        std::cout << "Underlying pricing, p0u = "  << std::endl;
+        std::cout << "Underlying pricing"  << std::endl;
         Real delta = (p0u - p0d) / (s0u - s0d);
 
         // Store results
