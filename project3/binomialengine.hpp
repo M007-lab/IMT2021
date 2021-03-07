@@ -114,7 +114,7 @@ namespace QuantLib {
                                       process_->stateVariable(),
                                       flatDividends, flatRiskFree, flatVol));
         
-        maturity = ((timeSteps_+2)/(timeSteps_))*maturity;
+        //maturity = ((timeSteps_+2)/(timeSteps_))*maturity;
         TimeGrid grid(maturity, timeSteps_);
         
         
@@ -167,15 +167,11 @@ namespace QuantLib {
         // Real delta = (p1u - p1d) / (s1u - s1d);
 
         // Finally, rollback to t=0
-        //option.rollback(0.0);
-        std::cout << "Option pricing " << grid[1] << "/" << grid[0] << "/" << std::endl;
-        option.rollback(grid[0]);
+        option.rollback(0.0);
         Array va(option.values());
         QL_ENSURE(va.size() == 3, "Expect 3 nodes in grid at 2 step");
         //Real p0 = option.presentValue();
-        std::cout << "Up time "  << std::endl;
         Real p0u = va[2]; // 1
-        std::cout << "Up time end "  << std::endl;
         Real p0  = va[1]; // 0
         Real p0d = va[0]; // -1
         std::cout << p0d  << "/" << p0 << "/" << p0u << std::endl;
