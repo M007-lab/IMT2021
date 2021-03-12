@@ -174,10 +174,11 @@ namespace QuantLib {
         Real p0u = va[2]; // 1
         Real p0  = va[1]; // 0
         Real p0d = va[0]; // -1
-        std::cout << p0d  << "/" << p0 << "/" << p0u << std::endl;
-        Real s0u = lattice->underlying(2, 2); // up (high) price
-        Real s0d = lattice->underlying(2, 0); // down (low) price
+        std::cout << p0d  << "/" << p0 << "/" << p0u   << std::endl;
         std::cout << "Underlying pricing"  << std::endl;
+        Real s0u = lattice->underlying(0, 2); // up (high) price
+        Real s0d = lattice->underlying(0, 0); // down (low) price
+        std::cout << s0d  << "/" << s0 << "/" << s0u   << std::endl;
         Real delta = (p0u - p0d) / (s0u - s0d);
 
         // Store results

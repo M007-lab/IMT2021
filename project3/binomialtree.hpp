@@ -71,55 +71,72 @@ namespace QuantLib {
                         Size steps)
         : BinomialTree_2<T>(process, end, steps) {}
         Real underlying(Size i, Size index) const {
-            Real eps = 0.001;
-            Real u = std::exp(this->driftPerStep_ + this->up_);
-            Real d = std::exp(this->driftPerStep_ - this->up_);
+            // static BigInteger CT = 0;
+            // static BigInteger CT2 = 0;
+            Real z = this->x0_;
+            Real eps = 0.01;
+            Real u = std::exp(this->up_);
+            Real d = std::exp(-this->up_);
+           
             // index = upper node
-            if(index == i+2){
-              //std::cout << " Hey Up" << std::endl;
+            // std::cout << " Hey" << i << " "<< index << std::endl;
+            // if(index == i+2){
+            //   eps = u/d - 1;
+            //   //std::cout << " Hey Up" << eps << std::endl;
+            //   z +=  log(1 + eps);
+            //   index -= 1;
+
+            // }
+            // // index = lower node
+            // if(index == 0){
+            //   //eps = -d/u + 1;
+            //   //std::cout << " Hey down"  << eps << std::endl;
+            //   z += log(1 - eps);
+            //   //index += 1;
               
-              //return this->x0_*std::exp(i*this->driftPerStep_ + i*this->up_)+ log(1 + eps);
-              return (this->x0_+ log(1 + eps))*std::pow(u,i) ; //this->x0_ *std::pow(u,i-2)*(1 + eps);
-            }
-            // index = lower node
-            else if(index == 0){
-              //wnstd::cout << " Hey down" << std::endl;
-              //return this->x0_*std::exp(i*this->driftPerStep_ - i*this->up_)+ log(1 - eps);
-              return (this->x0_ + log(1 - eps))*std::pow(d,i);//this->x0_*std::pow(d,i - 2)*(1 - eps);
-            }
-            else {
-               index = index - 1;
-               //std::cout << " Hey else" << std::endl;
-               BigInteger j = 2*BigInteger(index) - BigInteger(i);
-              // exploiting the forward value tree centering
-              // Real z;
-              // if (j < 0){z = pow(d,abs(j));}
-              // else{z = pow(u,j);}
-              // return std::exp((i-j)*this->driftPerStep_)*z;
-              return this->x0_*std::exp(i*this->driftPerStep_ + j*this->up_);
-            }
+            // }
+            
+            // if (index==1 && CT == 0 ){
+            //   std::cout << "CT = " << CT << std::endl;
+            //     z += log(1 - eps);
+            //     CT+=1;
+            // }
+            // if (index==i+1 && CT2 == 1 ){
+            //   std::cout << "CT2 = " << CT2 << std::endl;
+            //     z += log(1 + eps);
+            //     CT+=1;
+            // }
+            // if (index==i+1){CT2+=1;}
+            
+            index = index - 1;
+            //std::cout  << " Hey else" << std::endl;
+            BigInteger j = 2*BigInteger(index) - BigInteger(i);
+            // exploiting the forward value tree centering
+            return z*std::exp(i*this->driftPerStep_ + j*this->up_);
+        
+            
             
         }
         Real probability(Size i, Size index, Size branch) const {
-            Real eps = 0.001;
-            Real dx0_p = 1 + log(1+eps)/this->x0_;
-            Real dx0_m = 1 + log(1-eps)/this->x0_;
-            Real u = std::exp(this->driftPerStep_ + this->up_);
-            Real d = std::exp(this->driftPerStep_ - this->up_);
-
-            if(index == i+2){
-               std::cout << " Hey Up" << std::endl;
-               Real pd_ = 0.5*dx0_p*d/u;
-               if (branch == 0){return pd_;}
-               else{return 1 - pd_;}
+            return 0.5;
+            // Real eps = 0.0001;
+            // Real dx0_p = 1 + std::log(1+eps) / this->x0_;
+            // Real dx0_m = 1 + std::log(1-eps) / this->x0_;
+            // Real u = std::exp(this->driftPerStep_ + this->up_);
+            // Real d = std::exp(this->driftPerStep_ - this->up_);
+            // std::cout << index << i << branch << std::endl;
+            // if(index == i+2){
+            //    std::cout << " Hey Pu_" << std::endl;
+            //    Real pd_ = 0.5*dx0_p*d/u;
+            //    return (branch == 0 ? pd_ : 1 - pd_);
+            // }
+            // else if(index == 0){
+            //    std::cout << " Hey pd_" << std::endl;
+            //    Real pu_ = 0.5*dx0_m*u/d;
+            //    return (branch==1 ? pu_: 1 - pu_);
                
-            }
-            else if(index == 0){
-               Real pu_ = 0.5*dx0_m*u/d;
-               if (branch == 1){return pu_;}
-               else{return 1 - pu_;}
-            }
-            else{return 0.5;}
+            // }
+            // else {return 0.5;}
         }
       protected:
         Real up_;
