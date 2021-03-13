@@ -117,27 +117,7 @@ namespace QuantLib {
             
             
         }
-        Real probability(Size i, Size index, Size branch) const {
-            return 0.5;
-            // Real eps = 0.0001;
-            // Real dx0_p = 1 + std::log(1+eps) / this->x0_;
-            // Real dx0_m = 1 + std::log(1-eps) / this->x0_;
-            // Real u = std::exp(this->driftPerStep_ + this->up_);
-            // Real d = std::exp(this->driftPerStep_ - this->up_);
-            // std::cout << index << i << branch << std::endl;
-            // if(index == i+2){
-            //    std::cout << " Hey Pu_" << std::endl;
-            //    Real pd_ = 0.5*dx0_p*d/u;
-            //    return (branch == 0 ? pd_ : 1 - pd_);
-            // }
-            // else if(index == 0){
-            //    std::cout << " Hey pd_" << std::endl;
-            //    Real pu_ = 0.5*dx0_m*u/d;
-            //    return (branch==1 ? pu_: 1 - pu_);
-               
-            // }
-            // else {return 0.5;}
-        }
+        Real probability(Size i, Size index, Size branch) const {return 0.5;}
       protected:
         Real up_;
     };

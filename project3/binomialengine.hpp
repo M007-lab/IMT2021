@@ -153,7 +153,7 @@ namespace QuantLib {
         // // calculate gamma by taking the first derivate of the two deltas
         // Real delta2u = (p2u - p2m)/(s2u-s2m);
         // Real delta2d = (p2m-p2d)/(s2m-s2d);
-        Real gamma = 0.;//(delta2u - delta2d) / ((s2u-s2d)/2);
+       //(delta2u - delta2d) / ((s2u-s2d)/2);
         // Rollback to second-last step, and get option values (p1) at
         // this point
         // option.rollback(grid[1]);
@@ -180,6 +180,11 @@ namespace QuantLib {
         Real s0d = lattice->underlying(0, 0); // down (low) price
         std::cout << s0d  << "/" << s0 << "/" << s0u   << std::endl;
         Real delta = (p0u - p0d) / (s0u - s0d);
+        
+        // // calculate gamma by taking the first derivate of the two deltas
+        Real delta0u = (p0u - p0)/(s0u-s0);
+        Real delta0d = (p0d - p0)/(s0d-s0);
+        Real gamma = (delta0u - delta0d) / ((s0u-s0d)/2);
 
         // Store results
         results_.value = p0;
