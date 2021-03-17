@@ -48,6 +48,7 @@ namespace QuantLib {
             dt_ = end/steps;
             driftPerStep_ = process->drift(0.0, x0_) * dt_;
         }
+        // add + 2
         Size size(Size i) const {
             return i+1 + 2;
         }
@@ -71,13 +72,7 @@ namespace QuantLib {
                         Size steps)
         : BinomialTree_2<T>(process, end, steps) {}
         Real underlying(Size i, Size index) const {
-            // static BigInteger CT = 0;
-            // static BigInteger CT2 = 0;
-            Real z = this->x0_;
-            Real eps = 0.01;
-            Real u = std::exp(this->up_);
-            Real d = std::exp(-this->up_);
-           
+            
             // index = upper node
             // std::cout << " Hey" << i << " "<< index << std::endl;
             // if(index == i+2){
@@ -96,23 +91,12 @@ namespace QuantLib {
               
             // }
             
-            // if (index==1 && CT == 0 ){
-            //   std::cout << "CT = " << CT << std::endl;
-            //     z += log(1 - eps);
-            //     CT+=1;
-            // }
-            // if (index==i+1 && CT2 == 1 ){
-            //   std::cout << "CT2 = " << CT2 << std::endl;
-            //     z += log(1 + eps);
-            //     CT+=1;
-            // }
-            // if (index==i+1){CT2+=1;}
-            
+    
             index = index - 1;
             //std::cout  << " Hey else" << std::endl;
             BigInteger j = 2*BigInteger(index) - BigInteger(i);
             // exploiting the forward value tree centering
-            return z*std::exp(i*this->driftPerStep_ + j*this->up_);
+            return this->x0_*std::exp(i*this->driftPerStep_ + j*this->up_);
         
             
             
