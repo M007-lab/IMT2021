@@ -73,33 +73,12 @@ namespace QuantLib {
         : BinomialTree_2<T>(process, end, steps) {}
         Real underlying(Size i, Size index) const {
             
-            // index = upper node
-            // std::cout << " Hey" << i << " "<< index << std::endl;
-            // if(index == i+2){
-            //   eps = u/d - 1;
-            //   //std::cout << " Hey Up" << eps << std::endl;
-            //   z +=  log(1 + eps);
-            //   index -= 1;
-
-            // }
-            // // index = lower node
-            // if(index == 0){
-            //   //eps = -d/u + 1;
-            //   //std::cout << " Hey down"  << eps << std::endl;
-            //   z += log(1 - eps);
-            //   //index += 1;
-              
-            // }
-            
-    
-            index = index - 1;
-            //std::cout  << " Hey else" << std::endl;
-            BigInteger j = 2*BigInteger(index) - BigInteger(i);
+            // adpating index to new structure
+            int new_index = int(index) - 1;
+           
+            BigInteger j = 2*BigInteger(new_index) - BigInteger(i);
             // exploiting the forward value tree centering
-            return this->x0_*std::exp(i*this->driftPerStep_ + j*this->up_);
-        
-            
-            
+            return this->x0_*std::exp(i*this->driftPerStep_ + j*this->up_);  
         }
         Real probability(Size i, Size index, Size branch) const {return 0.5;}
       protected:
