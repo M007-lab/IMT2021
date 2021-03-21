@@ -97,7 +97,10 @@ namespace QuantLib {
                         Size steps)
         : BinomialTree_2<T>(process, end, steps) {}
         Real underlying(Size i, Size index) const {
-            BigInteger j = 2*BigInteger(index) - BigInteger(i);
+            // adpating index to new structure
+            int new_index = int(index) - 1;
+
+            BigInteger j = 2*BigInteger(new_index) - BigInteger(i);
             // exploiting equal jump and the x0_ tree centering
             return this->x0_*std::exp(j*this->dx_);
         }
@@ -184,8 +187,10 @@ namespace QuantLib {
                        Size steps,
                        Real strike);
         Real underlying(Size i, Size index) const {
-            return x0_ * std::pow(down_, Real(BigInteger(i)-BigInteger(index)))
-                       * std::pow(up_, Real(index));
+            // adpating index to new structure
+            int new_index = int(index) - 1;
+            return x0_ * std::pow(down_, Real(BigInteger(i)-BigInteger(new_index)))
+                       * std::pow(up_, Real(new_index));
         }
         Real probability(Size, Size, Size branch) const {
             return (branch == 1 ? pu_ : pd_);
