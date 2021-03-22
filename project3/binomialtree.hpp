@@ -168,8 +168,10 @@ namespace QuantLib {
                Size steps,
                Real strike);
         Real underlying(Size i, Size index) const {
-            return x0_ * std::pow(down_, Real(BigInteger(i)-BigInteger(index)))
-                       * std::pow(up_, Real(index));
+            // adpating index to new structure
+            int new_index = int(index) - 1;
+            return x0_ * std::pow(down_, Real(BigInteger(i)-BigInteger(new_index)))
+                       * std::pow(up_, Real(new_index));
         };
         Real probability(Size, Size, Size branch) const {
             return (branch == 1 ? pu_ : pd_);
